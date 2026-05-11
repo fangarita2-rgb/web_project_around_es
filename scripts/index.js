@@ -1,7 +1,4 @@
-// 1. Verificación inicial de conexión
-console.log("Script conectado correctamente");
-
-// 2. Array de tarjetas iniciales
+// 1. Array de tarjetas iniciales
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -29,7 +26,57 @@ const initialCards = [
   },
 ];
 
-// 3. Recorrido del array para verificar los datos
+// 2. Recorrido del array para mostrar nombres en consola
 initialCards.forEach((card) => {
   console.log(card.name);
 });
+
+// 3. Selección de elementos del DOM - Usando constantes y camelCase
+const editModal = document.querySelector("#edit-popup");
+const profileEditButton = document.querySelector(".profile__edit-button");
+const modalCloseButton = editModal.querySelector(".popup__close");
+const editProfileForm = document.querySelector("#edit-profile-form");
+
+const nameInput = editModal.querySelector(".popup__input_type_name");
+const descriptionInput = editModal.querySelector(
+  ".popup__input_type_description",
+);
+
+const profileTitle = document.querySelector(".profile__title");
+const profileDescription = document.querySelector(".profile__description");
+
+// 4. Funciones de un solo propósito para modales
+function openModal(modal) {
+  modal.classList.add("popup_is-opened");
+}
+
+function closeModal(modal) {
+  modal.classList.remove("popup_is-opened");
+}
+
+// 5. Lógica específica del perfil
+function fillProfileForm() {
+  nameInput.value = profileTitle.textContent;
+  descriptionInput.value = profileDescription.textContent;
+}
+
+function handleOpenEditModal() {
+  fillProfileForm();
+  openModal(editModal);
+}
+
+function handleCloseEditModal() {
+  closeModal(editModal);
+}
+
+function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
+  profileTitle.textContent = nameInput.value;
+  profileDescription.textContent = descriptionInput.value;
+  closeModal(editModal);
+}
+
+// 6. Event listeners
+profileEditButton.addEventListener("click", handleOpenEditModal);
+modalCloseButton.addEventListener("click", handleCloseEditModal);
+editProfileForm.addEventListener("submit", handleProfileFormSubmit);
