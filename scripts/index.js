@@ -200,6 +200,15 @@ setEventListeners(newCardForm, validationConfig);
 // =============================================
 // 11. Event listeners
 // =============================================
+
+// Botón X de cierre en todos los popups
+document.querySelectorAll(".popup__close").forEach((button) => {
+  button.addEventListener("click", () => {
+    const popup = button.closest(".popup");
+    closeModal(popup);
+  });
+});
+
 profileEditButton.addEventListener("click", handleOpenEditModal);
 editProfileForm.addEventListener("submit", handleProfileFormSubmit);
 
