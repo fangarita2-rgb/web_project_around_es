@@ -157,3 +157,33 @@
     padding: 0;
   }
 }
+
+/* ====== VALIDACIÓN DE FORMULARIOS ====== */
+.popup__error {
+  display: block;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+  min-height: 15px;
+  margin-top: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.popup__error_visible {
+  opacity: 1;
+}
+
+.popup__input_type_error {
+  border-bottom-color: #ff0000;
+}
+
+.popup__button_disabled {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+}
+
+.popup__button_disabled:hover {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+}

@@ -41,6 +41,8 @@
       <footer class="footer page__section">
         <p class="footer__copyright">© 2025 Around The U.S.</p>
       </footer>
+
+      <!-- POPUP: Editar perfil -->
       <div class="popup" id="edit-popup">
         <div class="popup__content">
           <button
@@ -49,23 +51,35 @@
             type="button"
           ></button>
           <h3 class="popup__title">Editar perfil</h3>
-          <form class="popup__form" id="edit-profile-form">
+          <form class="popup__form" id="edit-profile-form" novalidate>
             <input
               class="popup__input popup__input_type_name"
+              id="profile-name-input"
               name="name"
               placeholder="Nombre"
               type="text"
+              minlength="2"
+              maxlength="40"
+              required
             />
+            <span class="popup__error profile-name-input-error"></span>
             <input
               class="popup__input popup__input_type_description"
+              id="profile-description-input"
               name="description"
               placeholder="Acerca de mí"
               type="text"
+              minlength="2"
+              maxlength="200"
+              required
             />
+            <span class="popup__error profile-description-input-error"></span>
             <button class="button popup__button" type="submit">Guardar</button>
           </form>
         </div>
       </div>
+
+      <!-- POPUP: Nueva tarjeta -->
       <div class="popup" id="new-card-popup">
         <div class="popup__content">
           <button
@@ -74,25 +88,33 @@
             type="button"
           ></button>
           <h3 class="popup__title">Nuevo lugar</h3>
-          <form class="popup__form" id="new-card-form">
+          <form class="popup__form" id="new-card-form" novalidate>
             <input
               class="popup__input popup__input_type_card-name"
+              id="card-name-input"
               name="place-name"
               placeholder="Título"
-              required
               type="text"
+              minlength="2"
+              maxlength="30"
+              required
             />
+            <span class="popup__error card-name-input-error"></span>
             <input
               class="popup__input popup__input_type_url"
+              id="card-link-input"
               name="link"
               placeholder="Enlace a la imagen"
-              required
               type="url"
+              required
             />
+            <span class="popup__error card-link-input-error"></span>
             <button class="button popup__button" type="submit">Crear</button>
           </form>
         </div>
       </div>
+
+      <!-- POPUP: Imagen -->
       <div class="popup" id="image-popup">
         <div class="popup__content popup__content_content_image">
           <button
@@ -104,6 +126,8 @@
           <p class="popup__caption"></p>
         </div>
       </div>
+
+      <!-- Template tarjeta -->
       <template id="card-template">
         <li class="card">
           <img class="card__image" src="" alt="" />
@@ -123,6 +147,6 @@
         </li>
       </template>
     </div>
-    <script src="./scripts/index.js"></script>
+    <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>
