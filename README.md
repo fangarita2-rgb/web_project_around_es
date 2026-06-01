@@ -37,7 +37,3 @@ Around The U.S. es una página web interactiva donde los usuarios pueden explora
 - **blocks/**: Directorio con los archivos CSS segmentados por componentes (card, profile, popup, etc.).
 - **images/**: Contiene todos los recursos visuales e iconos del proyecto.
 - **vendor/**: Fuentes e Inter y normalize.css.
-
-### Enlace al Proyecto
-
-[GitHub Pages](https://fangarita2-rgb.github.io/web_project_around_es/)
