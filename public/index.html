@@ -1,332 +1,170 @@
-<p><meta charset="UTF-8" /></p>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Around the U.S.</title>
+    <link rel="stylesheet" href="./pages/index.css" />
+  </head>
+  <body class="page">
+    <div class="page__content">
+      <header class="header page__section">
+        <img
+          src="./images/logo.svg"
+          alt="Logotipo Around the U.S."
+          class="header__logo"
+        />
+      </header>
 
-<p><meta name="viewport" content="width=device-width, initial-scale=1.0" /></p>
+      <main class="content">
+        <section class="profile page__section">
+          <div class="profile__image-container">
+            <img
+              src="./images/avatar.jpg"
+              alt="Fotografía de perfil de Jacques Cousteau"
+              class="profile__image"
+            />
+          </div>
+          <div class="profile__info">
+            <div class="profile__title-container">
+              <h1 class="profile__title">Jacques Cousteau</h1>
+              <button
+                type="button"
+                class="profile__edit-button"
+                aria-label="Editar perfil"
+              ></button>
+            </div>
+            <p class="profile__description">Explorador</p>
+          </div>
+          <button
+            type="button"
+            class="profile__add-button"
+            aria-label="Agregar nueva tarjeta"
+          ></button>
+        </section>
 
-<p><title>Sistema Integrado de Gestión y Control - CDMB</title></p>
+        <section class="cards page__section">
+          <ul class="cards__list" id="cards-list"></ul>
+        </section>
+      </main>
 
-<p>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-      color: #2d6a2d;
-      background: #ffffff;
-      margin: 0;
-      padding: 20px;
-    }
+      <footer class="footer page__section">
+        <p class="footer__copyright">&copy; 2024 Around The U.S.</p>
+      </footer>
 
-    .main-content {
-      max-width: 1250px;
-      margin: 0 auto;
-      background: white;
-      padding: 30px;
-    }
+      <!-- Popup: Editar Perfil -->
+      <div class="popup" id="edit-popup">
+        <div class="popup__content">
+          <button
+            type="button"
+            class="popup__close"
+            aria-label="Cerrar ventana emergente"
+          ></button>
+          <h2 class="popup__title">Editar perfil</h2>
+          <form class="popup__form" id="edit-profile-form" novalidate>
+            <input
+              type="text"
+              name="name"
+              id="profile-name-input"
+              class="popup__input"
+              placeholder="Nombre"
+              minlength="2"
+              maxlength="40"
+              required
+            />
+            <span class="popup__error" id="profile-name-input-error"></span>
 
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      padding-bottom: 25px;
-      border-bottom: 4px solid #3a8a3a;
-    }
+            <input
+              type="text"
+              name="description"
+              id="profile-description-input"
+              class="popup__input"
+              placeholder="Acerca de mí"
+              minlength="2"
+              maxlength="200"
+              required
+            />
+            <span
+              class="popup__error"
+              id="profile-description-input-error"
+            ></span>
 
-    h1 {
-      color: #3a8a3a;
-      font-size: 28px;
-      margin: 0 0 10px 0;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      color: #2d6a2d;
-      margin: 0;
-    }
-
-    .card {
-      background: #fff;
-      border: 2px solid #b5d9b5;
-      border-radius: 8px;
-      padding: 25px;
-      margin-bottom: 28px;
-      box-shadow: 0 3px 10px rgba(58, 138, 58, 0.1);
-    }
-
-    .card h3 {
-      color: #2d6a2d;
-      font-size: 20px;
-      margin-top: 0;
-      border-bottom: 2px solid #b5d9b5;
-      padding-bottom: 10px;
-    }
-
-    .diagram-container {
-      text-align: center;
-      margin: 20px 0;
-      padding: 12px;
-      background: #f8fbf8;
-      border: 2px solid #b5d9b5;
-      border-radius: 8px;
-    }
-
-    .diagram-container img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-    }
-
-    /* Tarjetas de documentos con animación */
-    .doc-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 25px;
-      justify-content: center;
-      margin: 30px 0;
-    }
-
-    .doc-card {
-      background: white;
-      border: 2px solid #3a8a3a;
-      border-radius: 12px;
-      width: 320px;
-      padding: 25px 20px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(58, 138, 58, 0.15);
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-    }
-
-    .doc-card:hover {
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 15px 25px rgba(58, 138, 58, 0.25);
-      border-color: #2d6a2d;
-    }
-
-    .doc-card a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .doc-card span {
-      font-size: 65px;
-      display: block;
-      margin-bottom: 12px;
-      transition: transform 0.4s ease;
-    }
-
-    .doc-card:hover span {
-      transform: scale(1.15) rotate(8deg);
-    }
-
-    .footer-info {
-      text-align: center;
-      margin-top: 50px;
-      padding-top: 20px;
-      border-top: 2px solid #b5d9b5;
-      color: #555;
-      font-size: 15px;
-    }
-  </style>
-</p>
-
-<div class="main-content">
-  <div class="header">
-    <h1>Manual del Sistema Integrado de Gestión y Control</h1>
-    <p class="subtitle">
-      Corporación Autónoma Regional para la Defensa de la Meseta de Bucaramanga
-      (CDMB)
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>Estructura Administrativa para la Implementación del SIGC</h3>
-    <div class="diagram-container">
-      <img
-        src="https://www.cdmb.gov.co/images/documentos/institucional/sigc/estructura_administrtiv_para_el_sigc.jpg"
-        alt="Estructura Administrativa"
-      />
-    </div>
-    <p>
-      Describe un conjunto de procesos interrelacionados, que a través de
-      acciones coordinadas, orientan el logro de los resultados que se esperan
-      de la función de la CDMB.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>Visión - Código E-GE-DE01 — Versión 3</h3>
-    <p>
-      En el año 2031, la Corporación Autónoma Regional para la Defensa de la
-      Meseta de Bucaramanga - CDMB, será una entidad de referencia por su
-      gestión ambiental eficiente y eficaz en su jurisdicción, contribuyendo a
-      la protección de la vida de hoy y garantizando la del mañana.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>Misión - Código E-GE-DE02 — Versión 3</h3>
-    <p>
-      La Corporación Autónoma Regional para la Defensa de la Meseta de
-      Bucaramanga –CDMB, es un ente corporativo de carácter público, creada por
-      ley, encargada de la ejecución de las políticas, planes, programas y
-      proyectos en materia de ambiente, recursos naturales renovables y cambio
-      climático, aplicando las disposiciones legales vigentes sobre su
-      disposición, administración, manejo y aprovechamiento.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>Política Integrada del SIGC - Código E-GE-DE03 — Versión 5</h3>
-    <p>
-      La Corporación Autónoma Regional para la Defensa de la Meseta de
-      Bucaramanga – CDMB, como Autoridad Ambiental en cumplimiento de la
-      normatividad legal vigente, desarrolla y ejecuta políticas, planes,
-      programas y proyectos, generando conocimiento y cultura ambiental para la
-      ciudadanía que posibilita la administración y conservación del capital
-      natural, uso y aprovechamiento sostenible de los recursos naturales
-      renovables y el ambiente, así como el mejoramiento de la calidad de vida
-      en su jurisdicción.
-    </p>
-    <p>
-      Para ello contamos con un equipo humano competente comprometido a
-      satisfacer las necesidades y expectativas de los grupos de interés bajo
-      principios de transparencia, eficacia y eficiencia, logrando el buen
-      funcionamiento de los recursos públicos y mejorando continuamente el
-      sistema integrado de gestión.
-    </p>
-    <p>
-      Desarrollamos procesos enfocados a la prevención de la contaminación y la
-      disminución de los impactos ambientales generados por nuestras actividades
-      misionales, tenemos en cuenta la participación y consulta de los
-      servidores públicos; de igual manera trabajamos en la prevención de
-      enfermedades de origen laboral, incidentes y accidentes de trabajo de
-      todos sus servidores públicos y visitantes, mediante la aplicación de las
-      medidas de Seguridad y Salud en el Trabajo, el mejoramiento de las
-      condiciones, el ambiente laboral y el control eficaz de los peligros y
-      riesgos en el lugar de trabajo.
-    </p>
-    <p>
-      <strong
-        >Esta política será publicada, divulgada y actualizada cada vez que la
-        organización lo considere pertinente. De igual manera estará disponible
-        a todas las partes interesadas.</strong
-      >
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>Objetivos del SIGC — Código E-GE-DE05 — Versión 1</h3>
-    <p>
-      Los Objetivos de Calidad han sido formulados como parte de las actividades
-      de planificación del Sistema Integrado de Gestión y Control, guardan
-      relación y coherencia con la Política de Calidad.
-    </p>
-    <ul>
-      <li>
-        Ser una entidad que promueva espacios efectivos de participación
-        ciudadana.
-      </li>
-      <li>
-        Ser una entidad que comunique efectivamente principios y valores
-        relacionados con el conocimiento, uso y conservación de los recursos
-        naturales bajo principios de sostenibilidad.
-      </li>
-      <li>
-        Efectividad en el ejercicio de la autoridad ambiental dentro del marco
-        legal.
-      </li>
-      <li>
-        Recuperar y conservar la oferta de bienes y servicios ambientales y
-        propender por su uso racional y sostenible. Con especial atención de las
-        áreas protegidas debidamente manejadas.
-      </li>
-      <li>Entidad moderna e inteligente.</li>
-      <li>
-        Entidad con recurso humano competente, comprometido, sensible, motivado
-        y en permanente mejoramiento para el cumplimiento de su labor social y
-        ambiental.
-      </li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h3>Mapa de Procesos — Código E-GE-DE04 Versión 5</h3>
-    <div class="diagram-container">
-      <img
-        src="https://www.cdmb.gov.co/images/documentos/institucional/sigc/Mapa_de_Procesos.png"
-        alt="Mapa de Procesos"
-      />
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>
-      Manual del Sistema Integrado de Gestión y Control — Código E-GE-MA01 —
-      Versión 21
-    </h3>
-    <p>
-      Este Manual tiene por objeto describir el Sistema Integrado de Gestión y
-      Control implementado en la Corporación Autónoma Regional para la Defensa
-      de la Meseta de Bucaramanga – CDMB, a fin de asegurar su reconocimiento
-      por el personal de la Entidad, Usuarios y Partes Interesadas.
-    </p>
-
-    <div class="doc-cards">
-      <div class="doc-card">
-        <a
-          href="https://corporacion-autonoma-regional-para-la-defensa-de-la.micolombiadigital.gov.co/sites/corporacion-autonoma-regional-para-la-defensa-de-la/content/files/000083/4139_manual-del-sistema-integrado-de-gestion-y-control.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>📕</span>
-          <p><strong>Manual del SIGC E-GE-MA01 — Versión 21</strong></p>
-        </a>
+            <button type="submit" class="popup__button">Guardar</button>
+          </form>
+        </div>
       </div>
-      <div class="doc-card">
-        <a
-          href="https://corporacion-autonoma-regional-para-la-defensa-de-la.micolombiadigital.gov.co/sites/corporacion-autonoma-regional-para-la-defensa-de-la/content/files/000083/4138_codigo-de-integridad.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>📘</span>
-          <p><strong>Código de Integridad — Versión 2</strong></p>
-        </a>
+
+      <!-- Popup: Nueva Tarjeta -->
+      <div class="popup" id="new-card-popup">
+        <div class="popup__content">
+          <button
+            type="button"
+            class="popup__close"
+            aria-label="Cerrar ventana emergente"
+          ></button>
+          <h2 class="popup__title">Nuevo lugar</h2>
+          <form class="popup__form" id="new-card-form" novalidate>
+            <input
+              type="text"
+              name="place-name"
+              id="card-title-input"
+              class="popup__input"
+              placeholder="Título"
+              minlength="2"
+              maxlength="30"
+              required
+            />
+            <span class="popup__error" id="card-title-input-error"></span>
+
+            <input
+              type="url"
+              name="link"
+              id="card-url-input"
+              class="popup__input"
+              placeholder="Enlace a la imagen"
+              required
+            />
+            <span class="popup__error" id="card-url-input-error"></span>
+
+            <button type="submit" class="popup__button">Crear</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Popup: Ver Imagen Ampliada -->
+      <div class="popup" id="image-popup">
+        <div class="popup__content popup__content_content_image">
+          <button
+            type="button"
+            class="popup__close"
+            aria-label="Cerrar ventana emergente"
+          ></button>
+          <img src="#" alt="" class="popup__image" />
+          <p class="popup__caption"></p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <h3>Código de Buen Gobierno</h3>
-    <p>
-      La integración de los principios, valores y prácticas de la Corporación
-      Autónoma Regional para la Defensa de la Meseta de Bucaramanga - CDMB en el
-      Código de Buen Gobierno, permite orientar la interiorización de los
-      preceptos éticos en la gestión de los Servidores Públicos, fortaleciendo
-      las relaciones con la ciudadanía a partir de actuaciones transparentes,
-      justas, leales y eficaces, que aseguren un mejor uso de los recursos en
-      beneficio de la Comunidad.
-    </p>
+    <!-- Template para las tarjetas -->
+    <template id="card-template">
+      <li class="card">
+        <button
+          type="button"
+          class="card__delete-button"
+          aria-label="Eliminar tarjeta"
+        ></button>
+        <img src="#" alt="" class="card__image" />
+        <div class="card__description">
+          <h2 class="card__title"></h2>
+          <button
+            type="button"
+            class="card__like-button"
+            aria-label="Me gusta"
+          ></button>
+        </div>
+      </li>
+    </template>
 
-    <div class="doc-cards">
-      <div class="doc-card">
-        <a
-          href="https://corporacion-autonoma-regional-para-la-defensa-de-la.micolombiadigital.gov.co/sites/corporacion-autonoma-regional-para-la-defensa-de-la/content/files/000083/4137_codigo-buen-gobierno.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>📗</span>
-          <p><strong>Código de Buen Gobierno — Versión 4</strong></p>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-info">
-    <p>
-      <strong
-        >Corporación Autónoma Regional para la Defensa de la Meseta de
-        Bucaramanga (CDMB)</strong
-      >
-    </p>
-    <p>Última actualización: Julio de 2026</p>
-  </div>
-</div>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>

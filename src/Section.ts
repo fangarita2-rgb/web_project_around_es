@@ -1,26 +1,21 @@
-interface SectionOptions<T> {
-  items: T[];
-  renderer: (item: T) => void;
-}
-
 export class Section<T> {
-  private items: T[];
-  private renderer: (item: T) => void;
-  private container: HTMLElement;
+  private _renderedItems: T[];
+  private _renderer: (item: T) => void;
+  private _container: HTMLElement;
 
-  constructor({ items, renderer }: SectionOptions<T>, containerSelector: string) {
-    this.items = items;
-    this.renderer = renderer;
-    this.container = document.querySelector<HTMLElement>(containerSelector) as HTMLElement;
+  constructor({ items, renderer }: { items: T[]; renderer: (item: T) => void }, containerSelector: string) {
+    this._renderedItems = items;
+    this._renderer = renderer;
+    this._container = document.querySelector(containerSelector) as HTMLElement;
   }
 
-  public renderItems(): void {
-    this.items.forEach((item) => {
-      this.renderer(item);
+  renderItems(): void {
+    this._renderedItems.forEach((item) => {
+      this._renderer(item);
     });
   }
 
-  public addItem(element: HTMLElement): void {
-    this.container.prepend(element);
+  addItem(element: HTMLElement): void {
+    this._container.prepend(element);
   }
 }

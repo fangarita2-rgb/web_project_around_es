@@ -1,37 +1,35 @@
 import { Popup } from "./Popup.js";
 
-type SubmitCallback = (inputValues: Record<string, string>) => void;
-
 export class PopupWithForm extends Popup {
-  private handleFormSubmit: SubmitCallback;
-  private formElement: HTMLFormElement;
-  private inputList: NodeListOf<HTMLInputElement>;
+  private _handleFormSubmit: (formData: Record<string, string>) => void;
+  private _formElement: HTMLFormElement;
+  private _inputList: NodeListOf<HTMLInputElement>;
 
-  constructor(popupSelector: string, handleFormSubmit: SubmitCallback) {
+  constructor(popupSelector: string, handleFormSubmit: (formData: Record<string, string>) => void) {
     super(popupSelector);
-    this.handleFormSubmit = handleFormSubmit;
-    this.formElement = this.popupElement.querySelector<HTMLFormElement>(".popup__form") as HTMLFormElement;
-    this.inputList = this.formElement.querySelectorAll<HTMLInputElement>(".popup__input");
+    this._handleFormSubmit = handleFormSubmit;
+    this._formElement = this._popupElement.querySelector(".popup__form") as HTMLFormElement;
+    this._inputList = this._formElement.querySelectorAll(".popup__input");
   }
 
-  private getInputValues(): Record<string, string> {
-    const inputValues: Record<string, string> = {};
-    this.inputList.forEach((input) => {
-      inputValues[input.name] = input.value;
+  private _getInputValues(): Record<string, string> {
+    const formValues: Record<string, string> = {};
+    this._inputList.forEach((input) => {
+      formValues[input.name] = input.value;
     });
-    return inputValues;
+    return formValues;
   }
 
-  public setEventListeners(): void {
+  setEventListeners(): void {
     super.setEventListeners();
-    this.formElement.addEventListener("submit", (evt: Event) => {
+    this._formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this.handleFormSubmit(this.getInputValues());
+      this._handleFormSubmit(this._getInputValues());
     });
   }
 
-  public close(): void {
+  close(): void {
     super.close();
-    this.formElement.reset();
+    this._formElement.reset();
   }
 }

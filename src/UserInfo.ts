@@ -1,31 +1,21 @@
-interface UserSelectors {
-  nameSelector: string;
-  descriptionSelector: string;
-}
-
-interface UserData {
-  name: string;
-  description: string;
-}
-
 export class UserInfo {
-  private nameElement: HTMLElement;
-  private descriptionElement: HTMLElement;
+  private _nameElement: HTMLElement;
+  private _jobElement: HTMLElement;
 
-  constructor({ nameSelector, descriptionSelector }: UserSelectors) {
-    this.nameElement = document.querySelector<HTMLElement>(nameSelector) as HTMLElement;
-    this.descriptionElement = document.querySelector<HTMLElement>(descriptionSelector) as HTMLElement;
+  constructor({ nameSelector, jobSelector }: { nameSelector: string; jobSelector: string }) {
+    this._nameElement = document.querySelector(nameSelector) as HTMLElement;
+    this._jobElement = document.querySelector(jobSelector) as HTMLElement;
   }
 
-  public getUserInfo(): UserData {
+  getUserInfo(): { name: string; job: string } {
     return {
-      name: this.nameElement.textContent || "",
-      description: this.descriptionElement.textContent || "",
+      name: this._nameElement.textContent || "",
+      job: this._jobElement.textContent || ""
     };
   }
 
-  public setUserInfo({ name, description }: UserData): void {
-    this.nameElement.textContent = name;
-    this.descriptionElement.textContent = description;
+  setUserInfo(name: string, job: string): void {
+    this._nameElement.textContent = name;
+    this._jobElement.textContent = job;
   }
 }

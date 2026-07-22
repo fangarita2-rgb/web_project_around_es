@@ -1,83 +1,77 @@
 import { Card } from "./Card.js";
+import { FormValidator } from "./FormValidator.js";
 import { Section } from "./Section.js";
 import { PopupWithImage } from "./PopupWithImage.js";
 import { PopupWithForm } from "./PopupWithForm.js";
 import { UserInfo } from "./UserInfo.js";
-import { FormValidator } from "./FormValidator.js";
-import { initialCards, defaultFormConfig } from "./utils/constants.js";
-// =============================================
-// Selección de elementos del DOM
-// =============================================
-const profileEditButton = document.querySelector(".profile__edit-button");
-const profileAddButton = document.querySelector(".profile__add-button");
-const editProfileForm = document.querySelector("#edit-profile-form");
-const newCardForm = document.querySelector("#new-card-form");
-// =============================================
-// Instancias de UserInfo
-// =============================================
-const userInfo = new UserInfo({
-    nameSelector: ".profile__title",
-    descriptionSelector: ".profile__description",
-});
-// =============================================
-// Instancias de Popup
-// =============================================
+import { initialCards, validationConfig } from "./constants.js";
+// Instancias de Modales
 const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
-const editProfilePopup = new PopupWithForm("#edit-popup", (inputValues) => {
-    userInfo.setUserInfo({
-        name: inputValues["name"],
-        description: inputValues["description"],
+const userInfo = new UserInfo({
+    nameSelector: ".profile__title",
+    jobSelector: ".profile__description"
+});
+// Renderizador de Tarjetas
+const cardSection = new Section({
+    items: initialCards,
+    renderer: (item) => {
+        const cardElement = createCard(item);
+        cardSection.addItem(cardElement);
+    }
+}, "#cards-list");
+function createCard(item) {
+    const card = new Card(item, "#card-template", (name, link) => {
+        imagePopup.open(name, link);
     });
+    return card.generateCard();
+}
+cardSection.renderItems();
+// Formulario: Editar Perfil
+const editProfilePopup = new PopupWithForm("#edit-popup", (formData) => {
+    userInfo.setUserInfo(formData.name, formData.description);
     editProfilePopup.close();
 });
 editProfilePopup.setEventListeners();
-const newCardPopup = new PopupWithForm("#new-card-popup", (inputValues) => {
-    const cardData = {
-        name: inputValues["place-name"],
-        link: inputValues["link"],
-    };
-    const card = new Card(cardData, "#card-template", (name, link) => {
-        imagePopup.open(name, link);
+// Formulario: Agregar Tarjeta
+const newCardPopup = new PopupWithForm("#new-card-popup", (formData) => {
+    const newCardElement = createCard({
+        name: formData["place-name"],
+        link: formData.link
     });
-    cardsSection.addItem(card.generateCard());
+    cardSection.addItem(newCardElement);
     newCardPopup.close();
-    newCardFormValidator.resetValidation();
 });
 newCardPopup.setEventListeners();
-// =============================================
-// Instancias de FormValidator
-// =============================================
-const editProfileFormValidator = new FormValidator(defaultFormConfig, editProfileForm);
-editProfileFormValidator.enableValidation();
-const newCardFormValidator = new FormValidator(defaultFormConfig, newCardForm);
-newCardFormValidator.enableValidation();
-// =============================================
-// Instancia de Section y renderizado inicial
-// =============================================
-const cardsSection = new Section({
-    items: initialCards,
-    renderer: (item) => {
-        const card = new Card(item, "#card-template", (name, link) => {
-            imagePopup.open(name, link);
-        });
-        cardsSection.addItem(card.generateCard());
-    },
-}, "#cards-list");
-cardsSection.renderItems();
-// =============================================
-// Event listeners
-// =============================================
-profileEditButton.addEventListener("click", () => {
-    const { name, description } = userInfo.getUserInfo();
-    const nameInput = editProfileForm.querySelector(".popup__input_type_name");
-    const descriptionInput = editProfileForm.querySelector(".popup__input_type_description");
-    nameInput.value = name;
-    descriptionInput.value = description;
-    editProfileFormValidator.resetValidation();
+// Validadores
+const formValidators = {};
+const enableValidation = (config) => {
+    const formList = Array.from(document.querySelectorAll(config.formSelector));
+    formList.forEach((formElement) => {
+        const validator = new FormValidator(config, formElement);
+        const formName = formElement.getAttribute("id") || "";
+        formValidators[formName] = validator;
+        validator.enableValidation();
+    });
+};
+enableValidation(validationConfig);
+// Event Listeners de Botones de Apertura
+const profileEditButton = document.querySelector(".profile__edit-button");
+const profileAddButton = document.querySelector(".profile__add-button");
+profileEditButton === null || profileEditButton === void 0 ? void 0 : profileEditButton.addEventListener("click", () => {
+    var _a;
+    const data = userInfo.getUserInfo();
+    const nameInput = document.querySelector("#profile-name-input");
+    const jobInput = document.querySelector("#profile-description-input");
+    if (nameInput && jobInput) {
+        nameInput.value = data.name;
+        jobInput.value = data.job;
+    }
+    (_a = formValidators["edit-profile-form"]) === null || _a === void 0 ? void 0 : _a.resetValidation();
     editProfilePopup.open();
 });
-profileAddButton.addEventListener("click", () => {
-    newCardFormValidator.resetValidation();
+profileAddButton === null || profileAddButton === void 0 ? void 0 : profileAddButton.addEventListener("click", () => {
+    var _a;
+    (_a = formValidators["new-card-form"]) === null || _a === void 0 ? void 0 : _a.resetValidation();
     newCardPopup.open();
 });

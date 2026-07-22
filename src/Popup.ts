@@ -1,33 +1,36 @@
 export class Popup {
-  protected popupElement: HTMLElement;
+  protected _popupElement: HTMLElement;
+  private _handleEscCloseBind: (evt: KeyboardEvent) => void;
 
   constructor(popupSelector: string) {
-    this.popupElement = document.querySelector<HTMLElement>(popupSelector) as HTMLElement;
+    const element = document.querySelector<HTMLElement>(popupSelector);
+    if (!element) {
+      throw new Error(`No se encontró el elemento con selector: ${popupSelector}`);
+    }
+    this._popupElement = element;
+    this._handleEscCloseBind = this._handleEscClose.bind(this);
   }
 
-  private handleEscClose = (evt: KeyboardEvent): void => {
+  open(): void {
+    this._popupElement.classList.add("popup_is-opened");
+    document.addEventListener("keydown", this._handleEscCloseBind);
+  }
+
+  close(): void {
+    this._popupElement.classList.remove("popup_is-opened");
+    document.removeEventListener("keydown", this._handleEscCloseBind);
+  }
+
+  private _handleEscClose(evt: KeyboardEvent): void {
     if (evt.key === "Escape") {
       this.close();
     }
-  };
-
-  public open(): void {
-    this.popupElement.classList.add("popup_is-opened");
-    document.addEventListener("keydown", this.handleEscClose);
   }
 
-  public close(): void {
-    this.popupElement.classList.remove("popup_is-opened");
-    document.removeEventListener("keydown", this.handleEscClose);
-  }
-
-  public setEventListeners(): void {
-    this.popupElement
-      .querySelector(".popup__close")!
-      .addEventListener("click", () => this.close());
-
-    this.popupElement.addEventListener("click", (evt: MouseEvent) => {
-      if (evt.target === this.popupElement) {
+  setEventListeners(): void {
+    this._popupElement.addEventListener("mousedown", (evt: MouseEvent) => {
+      const target = evt.target as HTMLElement;
+      if (target.classList.contains("popup_is-opened") || target.classList.contains("popup__close")) {
         this.close();
       }
     });

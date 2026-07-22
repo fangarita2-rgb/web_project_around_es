@@ -1,19 +1,23 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithImage extends Popup {
-  private imageElement: HTMLImageElement;
-  private captionElement: HTMLElement;
+  private _imageElement: HTMLImageElement;
+  private _captionElement: HTMLElement;
 
   constructor(popupSelector: string) {
     super(popupSelector);
-    this.imageElement = this.popupElement.querySelector<HTMLImageElement>(".popup__image") as HTMLImageElement;
-    this.captionElement = this.popupElement.querySelector<HTMLElement>(".popup__caption") as HTMLElement;
+    this._imageElement = this._popupElement.querySelector(".popup__image") as HTMLImageElement;
+    this._captionElement = this._popupElement.querySelector(".popup__caption") as HTMLElement;
   }
 
-  public open(name: string, link: string): void {
-    this.imageElement.src = link;
-    this.imageElement.alt = name;
-    this.captionElement.textContent = name;
+  // Se agregan los signos '?' para indicar que los parámetros son opcionales
+  // cumpliendo así con la firma del método open() de la clase base Popup.
+  open(name?: string, link?: string): void {
+    if (name && link) {
+      this._imageElement.src = link;
+      this._imageElement.alt = name;
+      this._captionElement.textContent = name;
+    }
     super.open();
   }
 }

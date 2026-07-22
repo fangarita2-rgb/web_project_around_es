@@ -1,40 +1,43 @@
 export class Card {
     constructor(data, templateSelector, handleCardClick) {
-        this.data = data;
-        this.templateSelector = templateSelector;
-        this.handleCardClick = handleCardClick;
+        this._element = null;
+        this._name = data.name;
+        this._link = data.link;
+        this._templateSelector = templateSelector;
+        this._handleCardClick = handleCardClick;
     }
-    getTemplate() {
-        const cardTemplate = document.querySelector(this.templateSelector);
-        return cardTemplate.content.querySelector(".card").cloneNode(true);
-    }
-    handleLikeButton() {
-        this.element
-            .querySelector(".card__like-button")
-            .classList.toggle("card__like-button_is-active");
-    }
-    handleDeleteButton() {
-        this.element.remove();
-    }
-    setEventListeners() {
-        this.element
-            .querySelector(".card__like-button")
-            .addEventListener("click", () => this.handleLikeButton());
-        this.element
-            .querySelector(".card__delete-button")
-            .addEventListener("click", () => this.handleDeleteButton());
-        this.element
-            .querySelector(".card__image")
-            .addEventListener("click", () => this.handleCardClick(this.data.name, this.data.link));
+    _getTemplate() {
+        var _a;
+        const template = document.querySelector(this._templateSelector);
+        const cardElement = (_a = template.content.querySelector(".card")) === null || _a === void 0 ? void 0 : _a.cloneNode(true);
+        return cardElement;
     }
     generateCard() {
-        this.element = this.getTemplate();
-        const cardImage = this.element.querySelector(".card__image");
-        const cardTitle = this.element.querySelector(".card__title");
-        cardImage.src = this.data.link;
-        cardImage.alt = this.data.name;
-        cardTitle.textContent = this.data.name;
-        this.setEventListeners();
-        return this.element;
+        this._element = this._getTemplate();
+        this._setEventListeners();
+        const imageElement = this._element.querySelector(".card__image");
+        const titleElement = this._element.querySelector(".card__title");
+        imageElement.src = this._link;
+        imageElement.alt = this._name;
+        titleElement.textContent = this._name;
+        return this._element;
+    }
+    _setEventListeners() {
+        if (!this._element)
+            return;
+        const likeButton = this._element.querySelector(".card__like-button");
+        const deleteButton = this._element.querySelector(".card__delete-button");
+        const cardImage = this._element.querySelector(".card__image");
+        likeButton === null || likeButton === void 0 ? void 0 : likeButton.addEventListener("click", () => {
+            likeButton.classList.toggle("card__like-button_active");
+        });
+        deleteButton === null || deleteButton === void 0 ? void 0 : deleteButton.addEventListener("click", () => {
+            var _a;
+            (_a = this._element) === null || _a === void 0 ? void 0 : _a.remove();
+            this._element = null;
+        });
+        cardImage === null || cardImage === void 0 ? void 0 : cardImage.addEventListener("click", () => {
+            this._handleCardClick(this._name, this._link);
+        });
     }
 }
