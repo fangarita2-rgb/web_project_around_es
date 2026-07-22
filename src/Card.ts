@@ -42,7 +42,7 @@ export class Card {
     const cardImage = this._element.querySelector(".card__image");
 
     likeButton?.addEventListener("click", () => {
-      likeButton.classList.toggle("card__like-button_active");
+      likeButton.classList.toggle("card__like-button_is-active");
     });
 
     deleteButton?.addEventListener("click", () => {

@@ -29,7 +29,7 @@ export class Card {
         const deleteButton = this._element.querySelector(".card__delete-button");
         const cardImage = this._element.querySelector(".card__image");
         likeButton === null || likeButton === void 0 ? void 0 : likeButton.addEventListener("click", () => {
-            likeButton.classList.toggle("card__like-button_active");
+            likeButton.classList.toggle("card__like-button_is-active");
         });
         deleteButton === null || deleteButton === void 0 ? void 0 : deleteButton.addEventListener("click", () => {
             var _a;
