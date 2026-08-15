@@ -1,10 +1,4 @@
-import {
-  CardData,
-  CardFormData,
-  UserData,
-  UserFormData,
-  AvatarFormData,
-} from "../utils/constants.js";
+import { CardData, CardFormData, UserData, UserFormData, AvatarFormData } from "../utils/constants.js";
 
 interface ApiOptions {
   baseUrl: string;
@@ -28,99 +22,67 @@ export class Api {
   }
 
   async getUserInfo(): Promise<UserData> {
-    try {
-      const res = await fetch(`${this.baseUrl}/users/me`, {
-        headers: this.headers,
-      });
-      return await this.handleResponse<UserData>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/users/me`, {
+      headers: this.headers,
+    });
+    return this.handleResponse<UserData>(res);
   }
 
   async getInitialCards(): Promise<CardData[]> {
-    try {
-      const res = await fetch(`${this.baseUrl}/cards`, {
-        headers: this.headers,
-      });
-      return await this.handleResponse<CardData[]>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/cards`, {
+      headers: this.headers,
+    });
+    return this.handleResponse<CardData[]>(res);
   }
 
   async updateUserInfo(data: UserFormData): Promise<UserData> {
-    try {
-      const res = await fetch(`${this.baseUrl}/users/me`, {
-        method: "PATCH",
-        headers: this.headers,
-        body: JSON.stringify(data),
-      });
-      return await this.handleResponse<UserData>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(data),
+    });
+    return this.handleResponse<UserData>(res);
   }
 
   async updateAvatar(data: AvatarFormData): Promise<UserData> {
-    try {
-      const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
-        method: "PATCH",
-        headers: this.headers,
-        body: JSON.stringify(data),
-      });
-      return await this.handleResponse<UserData>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(data),
+    });
+    return this.handleResponse<UserData>(res);
   }
 
   async addCard(data: CardFormData): Promise<CardData> {
-    try {
-      const res = await fetch(`${this.baseUrl}/cards`, {
-        method: "POST",
-        headers: this.headers,
-        body: JSON.stringify(data),
-      });
-      return await this.handleResponse<CardData>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/cards`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(data),
+    });
+    return this.handleResponse<CardData>(res);
   }
 
   async deleteCard(cardId: string): Promise<void> {
-    try {
-      const res = await fetch(`${this.baseUrl}/cards/${cardId}`, {
-        method: "DELETE",
-        headers: this.headers,
-      });
-      return await this.handleResponse<void>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+    return this.handleResponse<void>(res);
   }
 
   async likeCard(cardId: string): Promise<CardData> {
-    try {
-      const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-        method: "PUT",
-        headers: this.headers,
-      });
-      return await this.handleResponse<CardData>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: this.headers,
+    });
+    return this.handleResponse<CardData>(res);
   }
 
   async unlikeCard(cardId: string): Promise<CardData> {
-    try {
-      const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-        method: "DELETE",
-        headers: this.headers,
-      });
-      return await this.handleResponse<CardData>(res);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+    return this.handleResponse<CardData>(res);
   }
 }

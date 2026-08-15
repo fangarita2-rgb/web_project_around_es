@@ -3,20 +3,10 @@
   "version": "1.0.0",
   "description": "Around The U.S. - Proyecto 9",
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "webpack serve --mode development",
-    "tsc": "tsc"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "devDependencies": {
-    "typescript": "^7.0.2",
-    "webpack": "^5.0.0",
-    "webpack-cli": "^5.0.0",
-    "webpack-dev-server": "^5.0.0",
-    "ts-loader": "^9.0.0",
-    "html-webpack-plugin": "^5.0.0",
-    "css-loader": "^7.0.0",
-    "style-loader": "^4.0.0",
-    "file-loader": "^6.0.0",
-    "mini-css-extract-plugin": "^2.0.0"
+    "typescript": "^7.0.2"
   }
 }

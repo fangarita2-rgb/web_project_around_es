@@ -14,15 +14,16 @@ export class Card {
     isOwner() {
         return this.data.owner === this.userId;
     }
-    handleLikeButton() {
-        const isLiked = this.likeButton.classList.contains("card__like-button_is-active");
-        this.callbacks
-            .handleLikeClick(this.data._id, isLiked)
-            .then((updatedCard) => {
+    async handleLikeButton() {
+        try {
+            const isLiked = this.likeButton.classList.contains("card__like-button_is-active");
+            const updatedCard = await this.callbacks.handleLikeClick(this.data._id, isLiked);
             this.data.isLiked = updatedCard.isLiked;
             this.likeButton.classList.toggle("card__like-button_is-active", updatedCard.isLiked);
-        })
-            .catch((err) => console.error(err));
+        }
+        catch (err) {
+            console.error(err);
+        }
     }
     setEventListeners() {
         this.likeButton.addEventListener("click", () => this.handleLikeButton());

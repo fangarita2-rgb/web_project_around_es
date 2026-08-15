@@ -39,20 +39,23 @@ export class Card {
     return this.data.owner === this.userId;
   }
 
-  private handleLikeButton(): void {
-    const isLiked = this.likeButton.classList.contains(
-      "card__like-button_is-active",
-    );
-    this.callbacks
-      .handleLikeClick(this.data._id, isLiked)
-      .then((updatedCard) => {
-        this.data.isLiked = updatedCard.isLiked;
-        this.likeButton.classList.toggle(
-          "card__like-button_is-active",
-          updatedCard.isLiked,
-        );
-      })
-      .catch((err) => console.error(err));
+  private async handleLikeButton(): Promise<void> {
+    try {
+      const isLiked = this.likeButton.classList.contains(
+        "card__like-button_is-active",
+      );
+      const updatedCard = await this.callbacks.handleLikeClick(
+        this.data._id,
+        isLiked,
+      );
+      this.data.isLiked = updatedCard.isLiked;
+      this.likeButton.classList.toggle(
+        "card__like-button_is-active",
+        updatedCard.isLiked,
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   private setEventListeners(): void {
@@ -87,7 +90,8 @@ export class Card {
 
     const cardImage =
       this.element.querySelector<HTMLImageElement>(".card__image")!;
-    const cardTitle = this.element.querySelector<HTMLElement>(".card__title")!;
+    const cardTitle =
+      this.element.querySelector<HTMLElement>(".card__title")!;
     this.likeButton =
       this.element.querySelector<HTMLButtonElement>(".card__like-button")!;
 
